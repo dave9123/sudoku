@@ -1,0 +1,114 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 20px;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+#game-container {
+    display: inline-block;
+}
+
+/* Ensure table borders are clear */
+#sudoku-grid {
+    border-collapse: separate; /* Use 'separate' instead of 'collapse' to avoid border overlapping */
+    border-spacing: 0; /* Remove any spacing between cells */
+    border: 2px solid #000; /* Outer border for the grid */
+    margin: 0 auto;
+}
+
+#sudoku-grid td {
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 18px;
+    border: 1px solid #ccc; /* Default border for cells */
+    box-sizing: border-box; /* Ensure borders are included in cell size */
+}
+
+#sudoku-grid td input {
+    appearance: textfield;
+    width: 100%; /* Ensure input spans the full cell */
+    height: 100%; /* Ensure input matches cell height */
+    border: 1px solid transparent; /* No visible border unless focused */
+    text-align: center;
+    font-size: 18px;
+    outline: none;
+    box-sizing: border-box; /* Include padding and border in size calculation */
+    background-color: transparent; /* Keep the input background clear */
+}
+
+#sudoku-grid td input:disabled {
+    background-color: #f9f9f9; /* Add a background for disabled inputs */
+    color: #000; /* Ensure text color is visible */
+    border: none; /* Remove the border for disabled inputs */
+}
+
+#sudoku-grid td input:focus {
+    border: 1px solid #007bff;
+    background-color: #fff;
+}
+
+
+/* Add thick borders for 3x3 subgrids */
+#sudoku-grid td:nth-child(3n) {
+    border-right: 2px solid #000; /* Thick right border for every 3rd column */
+}
+
+#sudoku-grid tr:nth-child(3n) td {
+    border-bottom: 2px solid #000; /* Thick bottom border for every 3rd row */
+}
+
+/* Outer borders for the grid */
+#sudoku-grid tr:first-child td {
+    border-top: 2px solid #000; /* Thick top border for the first row */
+}
+
+#sudoku-grid td:first-child {
+    border-left: 2px solid #000; /* Thick left border for the first column */
+}
+
+button {
+    margin: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+#number-buttons {
+    display: grid;
+    grid-template-columns: repeat(3, 40px);
+    grid-gap: 5px;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+#number-buttons button {
+    width: 40px;
+    height: 40px;
+    margin: 5px 0;
+    font-size: 18px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+}
+
+#number-buttons button:hover {
+    background-color: #0056b3;
+}
