@@ -33,43 +33,91 @@ function stopTimer() {
     clearInterval(timeInterval);
 }
 
-const puzzle = [
-    [5, 3, 0, 0, 7, 0, 0, 0, 0],
-    [6, 0, 0, 1, 9, 5, 0, 0, 0],
-    [0, 9, 8, 0, 0, 0, 0, 6, 0],
-    [8, 0, 0, 0, 6, 0, 0, 0, 3],
-    [4, 0, 0, 8, 0, 3, 0, 0, 1],
-    [7, 0, 0, 0, 2, 0, 0, 0, 6],
-    [0, 6, 0, 0, 0, 0, 2, 8, 0],
-    [0, 0, 0, 4, 1, 9, 0, 0, 5],
-    [0, 0, 0, 0, 8, 0, 0, 7, 9],
-];
-
-function generateCompleteGrid() {
-    const grid = Array.from({ length: 9 }, () => Array(9).fill(0));
-    fillGrid(grid);
+function generateSudoku(blanks = 40) {
+    const grid = Array.from({ length: 9 }, () => Array(9).fill(0)); // Create empty grid
+    fillGrid(grid); // Fill the grid completely
+    removeNumbers(grid, blanks); // Remove numbers based on difficulty
     return grid;
 }
 
 function fillGrid(grid) {
     const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-
     for (let row = 0; row < 9; row++) {
         for (let col = 0; col < 9; col++) {
             if (grid[row][col] === 0) {
                 shuffleArray(numbers);
                 for (let num of numbers) {
-                    if (isValidPlacement(grid, row, col, num)) {
+                    if (isValid(grid, row, col, num)) {
                         grid[row][col] = num;
                         if (fillGrid(grid)) return true;
-                        grid[row][col] = 0;
+                        grid[row][col] = 0; // Backtrack if needed
                     }
                 }
-                return false;
+                return false; // Dead-end, trigger backtracking
             }
         }
     }
     return true;
+}
+
+function removeNumbers(grid, blanks) {
+    let count = blanks;
+    while (count > 0) {
+        const row = Math.floor(Math.random() * 9);
+        const col = Math.floor(Math.random() * 9);
+
+        if (grid[row][col] !== 0) {
+            const backup = grid[row][col];
+            grid[row][col] = 0;
+            if (!hasUniqueSolution(grid)) grid[row][col] = backup; // Restore if uniqueness breaks
+            else count--;
+        }
+    }
+}
+
+function hasUniqueSolution(grid) {
+    let solutions = 0;
+    const copy = grid.map((row) => row.slice());
+    solve(copy, () => solutions++);
+    return solutions === 1;
+}
+
+function solve(grid, onSolutionFound = () => {}) {
+    const emptyCell = findEmpty(grid);
+    if (!emptyCell) {
+        onSolutionFound();
+        return true;
+    }
+
+    const [row, col] = emptyCell;
+    for (let num = 1; num <= 9; num++) {
+        if (isValid(grid, row, col, num)) {
+            grid[row][col] = num;
+            if (solve(grid, onSolutionFound)) return true;
+            grid[row][col] = 0; // Backtrack
+        }
+    }
+    return false;
+}
+
+function isValid(grid, row, col, num) {
+    const boxStartRow = Math.floor(row / 3) * 3;
+    const boxStartCol = Math.floor(col / 3) * 3;
+
+    for (let i = 0; i < 9; i++) {
+        if (grid[row][i] === num || grid[i][col] === num) return false; // Check row & col
+        if (grid[boxStartRow + Math.floor(i / 3)][boxStartCol + (i % 3)] === num) return false; // Check box
+    }
+    return true;
+}
+
+function findEmpty(grid) {
+    for (let row = 0; row < 9; row++) {
+        for (let col = 0; col < 9; col++) {
+            if (grid[row][col] === 0) return [row, col];
+        }
+    }
+    return null;
 }
 
 function shuffleArray(array) {
@@ -79,86 +127,8 @@ function shuffleArray(array) {
     }
 }
 
-function generatePuzzle(grid, difficulty = 40) {
-    const puzzle = grid.map((row) => row.slice());
-    let attempts = difficulty;
-
-    while (attempts > 0) {
-        const row = Math.floor(Math.random() * 9);
-        const col = Math.floor(Math.random() * 9);
-
-        if (puzzle[row][col] !== 0) {
-            const backup = puzzle[row][col];
-            puzzle[row][col] = 0;
-
-            // Check if the puzzle has a unique solution
-            if (!hasUniqueSolution(puzzle)) {
-                puzzle[row][col] = backup;
-            } else {
-                attempts--;
-            }
-        }
-    }
-
-    return puzzle;
-}
-
-function hasUniqueSolution(grid) {
-    let solutions = 0;
-    solve(grid, () => solutions++);
-    return solutions === 1;
-}
-
-function solve(grid, onSolutionFound = () => {}) {
-    const emptyCell = findEmptyCell(grid);
-    if (!emptyCell) {
-        onSolutionFound();
-        return true;
-    }
-
-    const [row, col] = emptyCell;
-    for (let num = 1; num <= 9; num++) {
-        if (isValidPlacement(grid, row, col, num)) {
-            grid[row][col] = num;
-            if (solve(grid, onSolutionFound)) return true;
-            grid[row][col] = 0;
-        }
-    }
-
-    return false;
-}
-
-function findEmptyCell(grid) {
-    for (let row = 0; row < 9; row++) {
-        for (let col = 0; col < 9; col++) {
-            if (grid[row][col] === 0) return [row, col];
-        }
-    }
-    return null;
-}
-
-function isValidPlacement(grid, row, col, num) {
-    // Check row
-    if (grid[row].includes(num)) return false;
-
-    // Check column
-    for (let i = 0; i < 9; i++) {
-        if (grid[i][col] === num) return false;
-    }
-
-    // Check 3x3 grid
-    const startRow = Math.floor(row / 3) * 3;
-    const startCol = Math.floor(col / 3) * 3;
-    for (let i = startRow; i < startRow + 3; i++) {
-        for (let j = startCol; j < startCol + 3; j++) {
-            if (grid[i][j] === num) return false;
-        }
-    }
-
-    return true;
-}
-
 function generateGrid() {
+    const puzzle = generateSudoku();
     sudokuGrid.innerHTML = "";
     for (let row = 0; row < 9; row++) {
         const tr = document.createElement("tr");
