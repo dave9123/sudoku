@@ -3,12 +3,25 @@ const checkSolutionButton = document.getElementById("check-solution");
 const resetButton = document.getElementById("reset");
 const numberButtonsContainer = document.getElementById("number-buttons");
 const timerDisplay = document.querySelector("#timer");
+const darkModeToggle = document.getElementById("dark-mode-toggle");
 let selectedCell = null;
 let timer, elapsedTime = 0;
 
 document.addEventListener("DOMContentLoaded", () => {
     initGame();
 });
+
+darkModeToggle.addEventListener("click", () => {
+    document.body.classList.toggle("dark-mode");
+    darkModeToggle.textContent = 
+        document.body.classList.contains("dark-mode") 
+        ? "Light Mode" 
+        : "Dark Mode";
+});
+
+if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    document.body.classList.toggle("dark-mode");
+}
 
 function initGame() {
     generateGrid();
@@ -120,7 +133,7 @@ function generateNumberButtons() {
 
 function checkSolution() {
     const solution = Array.from(sudokuGrid.querySelectorAll("input")).map((input) => +input.value || 0);
-    if (validateSolution(solution)) {
+    if (validateSolution(solution) && solution.every((num) => num > 0)) {
         clearInterval(timer);
         alert(`Puzzle solved in ${timerDisplay.textContent}!`);
     } else {

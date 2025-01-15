@@ -1,24 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Sudoku Game</title>
-        <link rel="stylesheet" href="styles.css" />
-    </head>
-    <body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sudoku Game</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
         <h1>Sudoku Game</h1>
+        <button id="dark-mode-toggle">Toggle Dark Mode</button>
+    </header>
+    <main>
         <div id="game-container">
             <div id="info-container">
-                <div id="timer"></div>
+                <div id="timer">00:00</div>
             </div>
-            <table id="sudoku-grid"></table>
+            <table id="sudoku-grid" aria-label="Sudoku Puzzle Grid"></table>
             <div id="button-container">
                 <div id="number-buttons"></div>
                 <button id="check-solution">Check Solution</button>
                 <button id="reset">Reset</button>
             </div>
         </div>
-        <script src="script.js"></script>
-    </body>
+    </main>
+    <script src="script.js"></script>
+</body>
 </html>
