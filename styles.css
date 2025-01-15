@@ -135,6 +135,10 @@ body.dark-mode {
 
 body.dark-mode #sudoku-grid td input:disabled {
     background-color: #333;
+    color: white;
+}
+
+body.dark-mode #sudoku-grid td input {
     color: #ccc;
 }
 
