@@ -1,6 +1,6 @@
 # Sudoku
 
-A Sudoku that is heavily minified to fit into a QR code :)
+A Sudoku game that is heavily minified to fit into a QR code :)
 
 ![image](images/showcase.png)
 
