@@ -33,6 +33,18 @@ function stopTimer() {
     clearInterval(timeInterval);
 }
 
+const puzzle = [
+    [5, 3, 0, 0, 7, 0, 0, 0, 0],
+    [6, 0, 0, 1, 9, 5, 0, 0, 0],
+    [0, 9, 8, 0, 0, 0, 0, 6, 0],
+    [8, 0, 0, 0, 6, 0, 0, 0, 3],
+    [4, 0, 0, 8, 0, 3, 0, 0, 1],
+    [7, 0, 0, 0, 2, 0, 0, 0, 6],
+    [0, 6, 0, 0, 0, 0, 2, 8, 0],
+    [0, 0, 0, 4, 1, 9, 0, 0, 5],
+    [0, 0, 0, 0, 8, 0, 0, 7, 9],
+];
+
 function generateCompleteGrid() {
     const grid = Array.from({ length: 9 }, () => Array(9).fill(0));
     fillGrid(grid);
@@ -67,7 +79,7 @@ function shuffleArray(array) {
     }
 }
 
-function generatePuzzle(grid, blanks = 40) {
+function generatePuzzle(grid, difficulty = 40) {
     const puzzle = grid.map((row) => row.slice());
     let attempts = difficulty;
 
@@ -147,7 +159,6 @@ function isValidPlacement(grid, row, col, num) {
 }
 
 function generateGrid() {
-    const puzzle = generatePuzzle(generateCompleteGrid(), 40);
     sudokuGrid.innerHTML = "";
     for (let row = 0; row < 9; row++) {
         const tr = document.createElement("tr");
