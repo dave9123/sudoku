@@ -71,7 +71,7 @@ function generateGrid() {
     });
 }
 
-function generateSudoku(blanks = 60) {
+function generateSudoku(blanks = 40) {
     const grid = Array.from({ length: 9 }, () => Array(9).fill(0));
     fillGrid(grid);
     while (blanks > 0) {
