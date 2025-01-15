@@ -10,6 +10,16 @@ h1 {
     margin-bottom: 20px;
 }
 
+#info-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#info-container div {
+    margin: 0 10px;
+}
+
 #game-container {
     display: inline-block;
 }
@@ -107,4 +117,19 @@ button:hover {
 
 #number-buttons button:hover {
     background-color: #0056b3;
+}
+
+#note-mode-toggle {
+    margin: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+}
+
+#note-mode-toggle:hover {
+    background-color: #218838;
 }
